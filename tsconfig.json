@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "composite": true, /* Enable project compilation */
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "allowJs": false,
+    "outDir": "./dist",
+    "skipLibCheck": true
+  },
+  // "references": [
+  //   {
+  //     "path": "../shared"
+  //   }
+  // ],
+}
