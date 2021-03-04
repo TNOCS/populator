@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["jest", "node"],
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": false,
@@ -15,6 +16,10 @@
     "outDir": "./dist",
     "skipLibCheck": true
   },
+  "exclude": [
+    "**/dist/*",
+    "**/node_modules/*"
+  ],
   // "references": [
   //   {
   //     "path": "../shared"
