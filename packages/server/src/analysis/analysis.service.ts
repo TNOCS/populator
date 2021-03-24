@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FeatureCollection, Polygon } from 'geojson';
+import { FeatureCollection } from 'geojson';
 import { Repository } from 'typeorm';
-import Verblijfsobject from '../database/entities/verblijfsobject.entity';
+import Verblijfsobject from '../common/entities/verblijfsobject.entity';
 
 @Injectable()
-export class AnalyseService {
+export class AnalysisService {
   constructor(
     @InjectRepository(Verblijfsobject)
-    private verblijfsobjectRepository: Repository<Verblijfsobject>,
+    private verblijfsobjectactueelRepository: Repository<Verblijfsobject>,
   ) {}
 
   findInPolygon(
@@ -31,10 +31,10 @@ export class AnalyseService {
     const polygon = `POLYGON((${polygonCoordinateStrings.toString()}))`;
     console.log(polygon);
 
-    return this.verblijfsobjectRepository
-      .createQueryBuilder('verblijfsobject')
+    return this.verblijfsobjectactueelRepository
+      .createQueryBuilder('verblijfsobjectactueel')
       .where(
-        'ST_Within(verblijfsobject.geopunt, ST_Transform(ST_GeomFromText(:polygon, 4326), 28992))',
+        'ST_Within(verblijfsobjectactueel.geopunt, ST_Transform(ST_GeomFromText(:polygon, 4326), 28992))',
         { polygon: polygon },
       )
       .getMany();
