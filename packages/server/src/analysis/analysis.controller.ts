@@ -5,6 +5,7 @@ import { AnalysisService } from './analysis.service';
 import { FeatureDto } from '../common/dtos/Feature.dto';
 import { PointDto } from '../common/dtos/Point.dto';
 import { PolygonDto } from '../common/dtos/Polygon.dto';
+import { CircleFeatureDto } from '../common/dtos/CircleFeature.dto';
 
 @Controller('analysis')
 export class AnalysisController {
@@ -24,7 +25,7 @@ export class AnalysisController {
   @Post('circle')
   async analyseCircle(
     @Body(new ValidationPipe({ errorHttpStatusCode: 422 }))
-    circleFeature: FeatureDto,
+    circleFeature: CircleFeatureDto,
   ): Promise<Verblijfsobject[]> {
     return this.analyseService.findInCircle(
       circleFeature.geometry as PointDto,
