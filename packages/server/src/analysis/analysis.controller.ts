@@ -1,17 +1,34 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { FeatureCollection } from 'geojson';
+import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import Verblijfsobject from '../common/entities/verblijfsobject.entity';
-import { GeoJsonValidationPipe } from '../common/pipes/geojson-validation.pipe';
+import Pand from '../common/entities/pand.entity';
 import { AnalysisService } from './analysis.service';
+import { FeatureDto } from '../common/dtos/Feature.dto';
+import { PointDto } from '../common/dtos/Point.dto';
+import { PolygonDto } from '../common/dtos/Polygon.dto';
 
 @Controller('analysis')
 export class AnalysisController {
   constructor(private readonly analyseService: AnalysisService) {}
 
-  @Post()
-  async findInArea(
-    @Body(GeoJsonValidationPipe) featureCollection: FeatureCollection,
+  @Post('polygon')
+  async analysePolygon(
+    @Body(new ValidationPipe({ errorHttpStatusCode: 422 }))
+    polygonFeature: FeatureDto,
   ): Promise<Verblijfsobject[]> {
-    return this.analyseService.findInPolygon(featureCollection);
+    console.log(polygonFeature);
+    return this.analyseService.findInPolygon(
+      polygonFeature.geometry as PolygonDto,
+    );
+  }
+
+  @Post('circle')
+  async analyseCircle(
+    @Body(new ValidationPipe({ errorHttpStatusCode: 422 }))
+    circleFeature: FeatureDto,
+  ): Promise<Verblijfsobject[]> {
+    return this.analyseService.findInCircle(
+      circleFeature.geometry as PointDto,
+      circleFeature.properties.radius,
+    );
   }
 }
