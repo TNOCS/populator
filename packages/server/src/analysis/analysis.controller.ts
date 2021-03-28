@@ -1,11 +1,12 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import Verblijfsobject from '../common/entities/verblijfsobject.entity';
-import Pand from '../common/entities/pand.entity';
 import { AnalysisService } from './analysis.service';
 import { FeatureDto } from '../common/dtos/Feature.dto';
 import { PointDto } from '../common/dtos/Point.dto';
 import { PolygonDto } from '../common/dtos/Polygon.dto';
 import { CircleFeatureDto } from '../common/dtos/CircleFeature.dto';
+import { Buurten } from '../common/entities/buurten.entity';
+import { ReturnData } from '../common/dtos/Data.dto';
 
 @Controller('analysis')
 export class AnalysisController {
@@ -15,7 +16,7 @@ export class AnalysisController {
   async analysePolygon(
     @Body(new ValidationPipe({ errorHttpStatusCode: 422 }))
     polygonFeature: FeatureDto,
-  ): Promise<Verblijfsobject[]> {
+  ): Promise<unknown> {
     console.log(polygonFeature);
     return this.analyseService.findInPolygon(
       polygonFeature.geometry as PolygonDto,
@@ -26,10 +27,12 @@ export class AnalysisController {
   async analyseCircle(
     @Body(new ValidationPipe({ errorHttpStatusCode: 422 }))
     circleFeature: CircleFeatureDto,
-  ): Promise<Verblijfsobject[]> {
-    return this.analyseService.findInCircle(
+  ): Promise<unknown> {
+    const a = this.analyseService.findInCircle(
       circleFeature.geometry as PointDto,
       circleFeature.properties.radius,
     );
+
+    return a;
   }
 }

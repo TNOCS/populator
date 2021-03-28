@@ -1,5 +1,13 @@
 import { Geometry } from 'geojson';
-import { Column, PrimaryGeneratedColumn, Timestamp, ViewEntity } from 'typeorm';
+import {
+  Column,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Timestamp,
+  ViewEntity,
+} from 'typeorm';
+import Verblijfsobjectpandactueel from './verblijfsobjectpand.entity';
 
 export enum PandStatus {
   BouwvergunningVerleend = 'Bouwvergunning verleend',
@@ -17,6 +25,14 @@ class Pandactueel {
   @PrimaryGeneratedColumn()
   public gid: number;
 
+  @OneToMany(
+    () => Verblijfsobjectpandactueel,
+    (verblijfsobjectpandactueel) => verblijfsobjectpandactueel.gerelateerdpand,
+  )
+  @JoinColumn({
+    name: 'gerelateerdpand',
+    referencedColumnName: 'gerelateerdpand',
+  })
   @Column({ type: 'character varying' })
   public identificatie: string;
 
@@ -49,9 +65,6 @@ class Pandactueel {
 
   @Column({ type: 'numeric' })
   public bouwjaar: number;
-
-  @Column({ type: 'boolean' })
-  public geom_valid: boolean;
 
   @Column({ type: 'geometry' })
   public geovlak: Geometry;

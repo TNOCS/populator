@@ -2,12 +2,13 @@ import { Geometry } from 'geojson';
 import {
   Column,
   JoinColumn,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Timestamp,
   ViewEntity,
 } from 'typeorm';
-import Verblijfsobjectpandactueel from './verblijfsobjectpand.entity';
+import Pandactueel from './pand.entity';
+import Verblijfsobjectactueel from './verblijfsobject.entity';
 
 export enum VerblijfsobjectStatus {
   Gevormd = 'Verblijfsobject gevormd',
@@ -19,11 +20,11 @@ export enum VerblijfsobjectStatus {
 }
 
 @ViewEntity({ schema: 'bag' })
-class Verblijfsobjectactueel {
+class Verblijfsobjectpandactueel {
   @PrimaryGeneratedColumn()
   public gid: number;
 
-  @OneToMany(() => Verblijfsobjectpandactueel, (vopa) => vopa.identificatie)
+  @ManyToOne(() => Verblijfsobjectactueel, (voa) => voa.identificatie)
   @JoinColumn({ name: 'identificatie', referencedColumnName: 'identificatie' })
   @Column({ type: 'character varying' })
   public identificatie: string;
@@ -34,35 +35,25 @@ class Verblijfsobjectactueel {
   @Column({ type: 'integer' })
   public aanduidingrecordcorrectie: number;
 
-  @Column({ type: 'boolean' })
-  public officieel: boolean;
-
-  @Column({ type: 'boolean' })
-  public inonderzoek: boolean;
-
   @Column({ type: 'timestamp with time zone' })
   public begindatumtijdvakgeldigheid: Timestamp;
 
   @Column({ type: 'timestamp with time zone' })
   public einddatumtijdvakgeldigheid: Timestamp;
 
+  @ManyToOne(() => Pandactueel, (pandactueel) => pandactueel.identificatie)
+  @JoinColumn({
+    name: 'gerelateerdpand',
+    referencedColumnName: 'identificatie',
+  })
   @Column({ type: 'character varying' })
-  public documentnummer: string;
-
-  @Column({ type: 'date' })
-  public documentdatum: Date;
-
-  @Column({ type: 'character varying' })
-  public hoofdadres: string;
+  public gerelateerdpand: string;
 
   @Column({ type: 'enum', enum: VerblijfsobjectStatus })
   public verblijfsobjectstatus: VerblijfsobjectStatus;
 
-  @Column({ type: 'geometry' })
-  public geopunt: Geometry;
-
-  @Column({ type: 'geometry' })
-  public geovlak: Geometry;
+  @Column({ type: 'boolean' })
+  public geom_valid: Geometry;
 }
 
-export default Verblijfsobjectactueel;
+export default Verblijfsobjectpandactueel;
