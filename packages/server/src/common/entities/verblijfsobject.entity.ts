@@ -2,12 +2,16 @@ import { Geometry } from 'geojson';
 import {
   Column,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Timestamp,
   ViewEntity,
 } from 'typeorm';
-import Verblijfsobjectpandactueel from './verblijfsobjectpand.entity';
+import Pandactueelbestaand from './pand.entity';
+import Population from './population.entity';
 
 export enum VerblijfsobjectStatus {
   Gevormd = 'Verblijfsobject gevormd',
@@ -19,12 +23,10 @@ export enum VerblijfsobjectStatus {
 }
 
 @ViewEntity({ schema: 'bag' })
-class Verblijfsobjectactueel {
+class Verblijfsobjectactueelbestaand {
   @PrimaryGeneratedColumn()
   public gid: number;
 
-  @OneToMany(() => Verblijfsobjectpandactueel, (vopa) => vopa.identificatie)
-  @JoinColumn({ name: 'identificatie', referencedColumnName: 'identificatie' })
   @Column({ type: 'character varying' })
   public identificatie: string;
 
@@ -63,6 +65,25 @@ class Verblijfsobjectactueel {
 
   @Column({ type: 'geometry' })
   public geovlak: Geometry;
+
+  @OneToMany(() => Population, (pop) => pop.verblijfsobject)
+  @JoinColumn({ name: 'identificatie', referencedColumnName: 'identificatie' })
+  public population: Population[];
+
+  @ManyToMany(
+    () => Pandactueelbestaand,
+    (pand: Pandactueelbestaand) => pand.verblijfsobjecten,
+  )
+  @JoinTable({
+    name: 'verblijfsobjectpandactueelbestaand',
+    joinColumns: [
+      { name: 'identificatie', referencedColumnName: 'identificatie' },
+    ],
+    inverseJoinColumns: [
+      { name: 'gerelateerdpand', referencedColumnName: 'identificatie' },
+    ],
+  })
+  public panden: Pandactueelbestaand[];
 }
 
-export default Verblijfsobjectactueel;
+export default Verblijfsobjectactueelbestaand;

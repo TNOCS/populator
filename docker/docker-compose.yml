@@ -15,6 +15,7 @@ services:
     ports:
       - 5432:5432
     restart: on-failure
+    shm_size: '4g'
   
   pgadmin:
     container_name: pgadmin

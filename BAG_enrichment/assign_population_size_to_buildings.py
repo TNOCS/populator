@@ -935,52 +935,27 @@ for index, buurt in buurten.iterrows():
       # if queue size is the same after x loops quit
       count += 1
 
-      # print('count', count)
-      # print('should be', limit)
-
       if count == limit:
-
-        # print('count', count)
-        # print('retry_count', retry_count)
-        # print('previous_queue_size', previous_queue_size)
-        # print('children_queue.qsize()', children_queue.qsize())
-
         count = 0
         if previous_queue_size == children_queue.qsize():
           retry_count += 1
-        
-        # print('setting queue size')
         previous_queue_size = children_queue.qsize()
-        
         if retry_count == 3:
           break
 
+      # for each household get a child from queue and check if child can fit in household
       for hh in all_hh_with_children:
 
         if not children_queue.empty():
           children_in_hh = len(hh['children'])
-          # print('size', children_queue.qsize())
-          # print('children in hh', children_in_hh)
-          # print('sum', sum([ amount_of_1children_hh, amount_of_2children_hh, amount_of_3children_hh ]))
-          # print(amount_of_1children_hh)
-          # print(amount_of_2children_hh)
-          # print(amount_of_3children_hh)
-          # print('eval', children_in_hh == 0 or (children_in_hh == 1 and amount_of_2children_hh < hh_per_size['four person']) or (children_in_hh == 2 and amount_of_3children_hh < hh_per_size['five person']))
-          # print('eval 2', sum([ amount_of_1children_hh, amount_of_2children_hh, amount_of_3children_hh ]) == aantal_huishoudens_met_kinderen and amount_of_3children_hh == hh_per_size['five person'] and amount_of_2children_hh == hh_per_size['four person'])
-          # print(children_queue) 
-          # print('sum', sum([ amount_of_1children_hh, amount_of_2children_hh, amount_of_3children_hh ]))
-          # print('sum should meet', aantal_huishoudens_met_kinderen)
-          # print('3 children', hh_per_size['five person'])
-          # print('2 children', hh_per_size['four person'])
 
+          # if limit of households has been met, dump children
           if sum([ amount_of_1children_hh, amount_of_2children_hh, amount_of_3children_hh ]) == len(all_hh_with_children) and amount_of_3children_hh == hh_per_size['five person'] and amount_of_2children_hh == hh_per_size['four person']:
             children_queue.get()
           else:
             child = children_queue.get()
-
-            # print('to be placed child', child)
-            # print('for parents', hh)
             
+            # check if child can fit in the family, else put child back in queue and proceed to next household
             if children_in_hh == 0 or (children_in_hh == 1 and amount_of_2children_hh < hh_per_size['four person']) or (children_in_hh == 2 and amount_of_3children_hh < hh_per_size['five person']):   
               if hh['parent'] == '65plus':
                 hh['children'].append(child)
@@ -993,6 +968,7 @@ for index, buurt in buurten.iterrows():
             else:
               children_queue.put(child)
 
+            # keep track of the household sizes
             if children_in_hh != len(hh['children']):
               if len(hh['children']) == 1:
                 amount_of_1children_hh += 1

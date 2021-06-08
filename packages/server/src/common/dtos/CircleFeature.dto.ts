@@ -5,7 +5,7 @@ import { Type } from 'class-transformer';
 import { Matches, IsString, ValidateNested, IsNumber } from 'class-validator';
 
 class CirclePropertiesDto {
-  @Matches(/^Circle$/, { message: 'type must be Circle' })
+  @Matches(/^Circle$/, { message: 'shape must be Circle' })
   @IsString()
   shape: 'Circle';
 

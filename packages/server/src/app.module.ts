@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AnalysisModule } from './analysis/analysis.module';
-
+import { DetailedModule } from './detailed/detailed.module';
+import { SummarisedModule } from './summarised/summarised.module';
 @Module({
   imports: [
-    AnalysisModule,
+    DetailedModule,
+    SummarisedModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -25,7 +26,5 @@ import { AnalysisModule } from './analysis/analysis.module';
       }),
     }),
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

@@ -1,14 +1,5 @@
 import { Geometry } from 'geojson';
-import {
-  Column,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Timestamp,
-  ViewEntity,
-} from 'typeorm';
-import Pandactueel from './pand.entity';
-import Verblijfsobjectactueel from './verblijfsobject.entity';
+import { Column, PrimaryGeneratedColumn, Timestamp, ViewEntity } from 'typeorm';
 
 export enum VerblijfsobjectStatus {
   Gevormd = 'Verblijfsobject gevormd',
@@ -24,8 +15,6 @@ class Verblijfsobjectpandactueel {
   @PrimaryGeneratedColumn()
   public gid: number;
 
-  @ManyToOne(() => Verblijfsobjectactueel, (voa) => voa.identificatie)
-  @JoinColumn({ name: 'identificatie', referencedColumnName: 'identificatie' })
   @Column({ type: 'character varying' })
   public identificatie: string;
 
@@ -41,11 +30,6 @@ class Verblijfsobjectpandactueel {
   @Column({ type: 'timestamp with time zone' })
   public einddatumtijdvakgeldigheid: Timestamp;
 
-  @ManyToOne(() => Pandactueel, (pandactueel) => pandactueel.identificatie)
-  @JoinColumn({
-    name: 'gerelateerdpand',
-    referencedColumnName: 'identificatie',
-  })
   @Column({ type: 'character varying' })
   public gerelateerdpand: string;
 

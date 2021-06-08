@@ -1,13 +1,15 @@
+import { IsNumber, IsOptional } from 'class-validator';
 import { Geometry } from 'geojson';
 import {
+  AfterLoad,
   Column,
-  JoinColumn,
-  OneToMany,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   Timestamp,
   ViewEntity,
 } from 'typeorm';
-import Verblijfsobjectpandactueel from './verblijfsobjectpand.entity';
+import Verblijfsobjectactueelbestaand from './verblijfsobject.entity';
 
 export enum PandStatus {
   BouwvergunningVerleend = 'Bouwvergunning verleend',
@@ -21,18 +23,10 @@ export enum PandStatus {
 }
 
 @ViewEntity({ schema: 'bag' })
-class Pandactueel {
+class Pandactueelbestaand {
   @PrimaryGeneratedColumn()
   public gid: number;
 
-  @OneToMany(
-    () => Verblijfsobjectpandactueel,
-    (verblijfsobjectpandactueel) => verblijfsobjectpandactueel.gerelateerdpand,
-  )
-  @JoinColumn({
-    name: 'gerelateerdpand',
-    referencedColumnName: 'gerelateerdpand',
-  })
   @Column({ type: 'character varying' })
   public identificatie: string;
 
@@ -68,6 +62,33 @@ class Pandactueel {
 
   @Column({ type: 'geometry' })
   public geovlak: Geometry;
+
+  @ManyToMany(
+    () => Verblijfsobjectactueelbestaand,
+    (verbObj: Verblijfsobjectactueelbestaand) => verbObj.panden,
+  )
+  @JoinTable({
+    name: 'verblijfsobjectpandactueelbestaand',
+    joinColumns: [
+      { name: 'gerelateerdpand', referencedColumnName: 'identificatie' },
+    ],
+    inverseJoinColumns: [
+      { name: 'identificatie', referencedColumnName: 'identificatie' },
+    ],
+  })
+  public verblijfsobjecten: Verblijfsobjectactueelbestaand[];
+
+  @IsOptional()
+  @IsNumber()
+  protected peoplePresentInBuilding: number;
+
+  @AfterLoad()
+  calculatePeopleInBuilding(): void {
+    this.peoplePresentInBuilding = this.verblijfsobjecten.reduce(
+      (x, y) => x + y.population.reduce((a, b) => a + b.hh_size, 0),
+      0,
+    );
+  }
 }
 
-export default Pandactueel;
+export default Pandactueelbestaand;

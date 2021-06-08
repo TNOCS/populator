@@ -1,14 +1,12 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Index('buurten_geovlak_idx', ['geovlak'], {})
-@Index('buurten_pkey', ['gid'], { unique: true })
-@Entity('buurten', { schema: 'cbs' })
+@Entity('buurtdata', { schema: 'cbs' })
 export class Buurten {
-  @PrimaryGeneratedColumn({ type: 'integer', name: 'gid' })
+  @PrimaryGeneratedColumn()
   gid: number;
 
   @Column('character varying', { name: 'bu_code', nullable: true, length: 10 })
-  buCode: string | null;
+  bu_code: string | null;
 
   @Column('character varying', {
     name: 'jrstatcode',
@@ -18,243 +16,194 @@ export class Buurten {
   jrstatcode: string | null;
 
   @Column('character varying', { name: 'bu_naam', nullable: true, length: 60 })
-  buNaam: string | null;
-
-  @Column('character varying', { name: 'wk_code', nullable: true, length: 8 })
-  wkCode: string | null;
+  bu_naam: string | null;
 
   @Column('character varying', { name: 'wk_naam', nullable: true, length: 60 })
-  wkNaam: string | null;
-
-  @Column('character varying', { name: 'gm_code', nullable: true, length: 6 })
-  gmCode: string | null;
+  wk_naam: string | null;
 
   @Column('character varying', { name: 'gm_naam', nullable: true, length: 60 })
-  gmNaam: string | null;
-
-  @Column('double precision', {
-    name: 'ind_wbi',
-    nullable: true,
-    precision: 53,
-  })
-  indWbi: number | null;
-
-  @Column('character varying', { name: 'h2o', nullable: true, length: 4 })
-  h2o: string | null;
+  gm_naam: string | null;
 
   @Column('character varying', { name: 'postcode', nullable: true, length: 10 })
   postcode: string | null;
-
-  @Column('double precision', {
-    name: 'dek_perc',
-    nullable: true,
-    precision: 53,
-  })
-  dekPerc: number | null;
-
-  @Column('double precision', { name: 'oad', nullable: true, precision: 53 })
-  oad: number | null;
-
-  @Column('double precision', { name: 'sted', nullable: true, precision: 53 })
-  sted: number | null;
-
-  @Column('double precision', {
-    name: 'bev_dichth',
-    nullable: true,
-    precision: 53,
-  })
-  bevDichth: number | null;
 
   @Column('double precision', {
     name: 'aant_inw',
     nullable: true,
     precision: 53,
   })
-  aantInw: number | null;
-
-  @Column('double precision', {
-    name: 'aant_man',
-    nullable: true,
-    precision: 53,
-  })
-  aantMan: number | null;
-
-  @Column('double precision', {
-    name: 'aant_vrouw',
-    nullable: true,
-    precision: 53,
-  })
-  aantVrouw: number | null;
+  aant_inw: number | null;
 
   @Column('double precision', {
     name: 'p_00_14_jr',
     nullable: true,
     precision: 53,
   })
-  p_00_14Jr: number | null;
+  p_00_14_jr: number | null;
+
+  @Column('double precision', {
+    name: 't_00_14_jr',
+    nullable: true,
+    precision: 53,
+  })
+  t_00_14_jr: number | null;
 
   @Column('double precision', {
     name: 'p_15_24_jr',
     nullable: true,
     precision: 53,
   })
-  p_15_24Jr: number | null;
+  p_15_24_jr: number | null;
+
+  @Column('double precision', {
+    name: 't_15_24_jr',
+    nullable: true,
+    precision: 53,
+  })
+  t_15_24_jr: number | null;
 
   @Column('double precision', {
     name: 'p_25_44_jr',
     nullable: true,
     precision: 53,
   })
-  p_25_44Jr: number | null;
+  p_25_44_jr: number | null;
+
+  @Column('double precision', {
+    name: 't_25_44_jr',
+    nullable: true,
+    precision: 53,
+  })
+  t_25_44_jr: number | null;
 
   @Column('double precision', {
     name: 'p_45_64_jr',
     nullable: true,
     precision: 53,
   })
-  p_45_64Jr: number | null;
+  p_45_64_jr: number | null;
+
+  @Column('double precision', {
+    name: 't_45_64_jr',
+    nullable: true,
+    precision: 53,
+  })
+  t_45_64_jr: number | null;
 
   @Column('double precision', {
     name: 'p_65_eo_jr',
     nullable: true,
     precision: 53,
   })
-  p_65EoJr: number | null;
+  p_65_eo_jr: number | null;
 
   @Column('double precision', {
-    name: 'p_ongehuwd',
+    name: 't_65_eo_jr',
     nullable: true,
     precision: 53,
   })
-  pOngehuwd: number | null;
-
-  @Column('double precision', {
-    name: 'p_gehuwd',
-    nullable: true,
-    precision: 53,
-  })
-  pGehuwd: number | null;
-
-  @Column('double precision', {
-    name: 'p_gescheid',
-    nullable: true,
-    precision: 53,
-  })
-  pGescheid: number | null;
-
-  @Column('double precision', {
-    name: 'p_verweduw',
-    nullable: true,
-    precision: 53,
-  })
-  pVerweduw: number | null;
+  t_65_eo_jr: number | null;
 
   @Column('double precision', {
     name: 'aantal_hh',
     nullable: true,
     precision: 53,
   })
-  aantalHh: number | null;
+  aantal_hh: number | null;
 
   @Column('double precision', {
     name: 'p_eenp_hh',
     nullable: true,
     precision: 53,
   })
-  pEenpHh: number | null;
+  p_eenp_hh: number | null;
+
+  @Column('double precision', {
+    name: 't_eenp_hh',
+    nullable: true,
+    precision: 53,
+  })
+  t_eenp_hh: number | null;
 
   @Column('double precision', {
     name: 'p_hh_z_k',
     nullable: true,
     precision: 53,
   })
-  pHhZK: number | null;
+  p_hh_z_k: number | null;
+
+  @Column('double precision', {
+    name: 't_hh_z_k',
+    nullable: true,
+    precision: 53,
+  })
+  t_hh_z_k: number | null;
 
   @Column('double precision', {
     name: 'p_hh_m_k',
     nullable: true,
     precision: 53,
   })
-  pHhMK: number | null;
+  p_hh_m_k: number | null;
+
+  @Column('double precision', {
+    name: 't_hh_m_k',
+    nullable: true,
+    precision: 53,
+  })
+  t_hh_m_k: number | null;
 
   @Column('numeric', { name: 'gem_hh_gr', nullable: true })
-  gemHhGr: string | null;
+  gem_hh_gr: number | null;
 
   @Column('double precision', {
     name: 'p_west_al',
     nullable: true,
     precision: 53,
   })
-  pWestAl: number | null;
+  p_west_al: number | null;
 
   @Column('double precision', {
     name: 'p_n_w_al',
     nullable: true,
     precision: 53,
   })
-  pNWAl: number | null;
+  p_n_w_al: number | null;
 
   @Column('double precision', {
     name: 'p_marokko',
     nullable: true,
     precision: 53,
   })
-  pMarokko: number | null;
+  p_marokko: number | null;
 
   @Column('double precision', {
     name: 'p_ant_aru',
     nullable: true,
     precision: 53,
   })
-  pAntAru: number | null;
+  p_ant_aru: number | null;
 
   @Column('double precision', {
     name: 'p_surinam',
     nullable: true,
     precision: 53,
   })
-  pSurinam: number | null;
+  p_surinam: number | null;
 
   @Column('double precision', {
     name: 'p_turkije',
     nullable: true,
     precision: 53,
   })
-  pTurkije: number | null;
+  p_turkije: number | null;
 
   @Column('double precision', {
     name: 'p_over_nw',
     nullable: true,
     precision: 53,
   })
-  pOverNw: number | null;
-
-  @Column('double precision', {
-    name: 'opp_tot',
-    nullable: true,
-    precision: 53,
-  })
-  oppTot: number | null;
-
-  @Column('double precision', {
-    name: 'opp_land',
-    nullable: true,
-    precision: 53,
-  })
-  oppLand: number | null;
-
-  @Column('double precision', {
-    name: 'opp_water',
-    nullable: true,
-    precision: 53,
-  })
-  oppWater: number | null;
-
-  @Column('numeric', { name: 'shape_leng', nullable: true })
-  shapeLeng: string | null;
-
-  @Column('numeric', { name: 'shape_area', nullable: true })
-  shapeArea: string | null;
+  p_over_nw: number | null;
 
   @Column('geometry', { name: 'geovlak', nullable: true })
   geovlak: string | null;
