@@ -1,5 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { FeatureDto } from '../common/dtos/Feature.dto';
+import { FeatureCollectionDto } from '../common/dtos/FeatureCollection.dto';
 import Pandactueelbestaand from '../common/entities/pand.entity';
 import { SupportedGeometryPipe } from '../common/pipes/supportedGeometry.pipe';
 import { DetailedService } from './detailed.service';
@@ -12,7 +13,7 @@ export class DetailedController {
   async getDetailedData(
     @Body(new SupportedGeometryPipe())
     feature: FeatureDto,
-  ): Promise<Pandactueelbestaand[]> {
+  ): Promise<FeatureCollectionDto> {
     return this.detailedService.getDetailedDataInGeometry(feature);
   }
 }

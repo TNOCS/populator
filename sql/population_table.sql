@@ -16,7 +16,7 @@ CREATE TABLE bag.population
     bu_code character varying(20) COLLATE pg_catalog."default",
     identificatie character varying(20) COLLATE pg_catalog."default",
     oppervlakteverblijfsobject numeric(15,0),
-    gebruiksdoelverblijfsobject character(50) COLLATE pg_catalog."default",
+    gebruiksdoelverblijfsobject character varying(50) COLLATE pg_catalog."default",
     CONSTRAINT population_pkey PRIMARY KEY (id)
 )
 

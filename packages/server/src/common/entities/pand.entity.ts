@@ -27,8 +27,8 @@ class Pandactueelbestaand {
   @PrimaryGeneratedColumn()
   public gid: number;
 
-  @Column({ type: 'character varying' })
-  public identificatie: string;
+  @Column({ type: 'character varying', name: 'identificatie' })
+  public id: string;
 
   @Column({ type: 'boolean' })
   public aanduidingrecordinactief: boolean;
@@ -54,11 +54,11 @@ class Pandactueelbestaand {
   @Column({ type: 'date' })
   public documentdatum: Date;
 
-  @Column({ type: 'enum', enum: PandStatus })
-  public pandstatus: PandStatus;
+  @Column({ type: 'enum', enum: PandStatus, name: 'pandstatus' })
+  public sts: PandStatus;
 
-  @Column({ type: 'numeric' })
-  public bouwjaar: number;
+  @Column({ type: 'numeric', name: 'bouwjaar' })
+  public yr: number;
 
   @Column({ type: 'geometry' })
   public geovlak: Geometry;
@@ -69,23 +69,19 @@ class Pandactueelbestaand {
   )
   @JoinTable({
     name: 'verblijfsobjectpandactueelbestaand',
-    joinColumns: [
-      { name: 'gerelateerdpand', referencedColumnName: 'identificatie' },
-    ],
-    inverseJoinColumns: [
-      { name: 'identificatie', referencedColumnName: 'identificatie' },
-    ],
+    joinColumns: [{ name: 'gerelateerdpand', referencedColumnName: 'id' }],
+    inverseJoinColumns: [{ name: 'identificatie', referencedColumnName: 'id' }],
   })
   public verblijfsobjecten: Verblijfsobjectactueelbestaand[];
 
   @IsOptional()
   @IsNumber()
-  protected peoplePresentInBuilding: number;
+  protected ttl_ppl: number;
 
   @AfterLoad()
   calculatePeopleInBuilding(): void {
-    this.peoplePresentInBuilding = this.verblijfsobjecten.reduce(
-      (x, y) => x + y.population.reduce((a, b) => a + b.hh_size, 0),
+    this.ttl_ppl = this.verblijfsobjecten.reduce(
+      (x, y) => x + y.pop.reduce((a, b) => a + b.hh_size, 0),
       0,
     );
   }

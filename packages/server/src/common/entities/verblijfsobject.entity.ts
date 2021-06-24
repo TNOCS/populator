@@ -27,8 +27,8 @@ class Verblijfsobjectactueelbestaand {
   @PrimaryGeneratedColumn()
   public gid: number;
 
-  @Column({ type: 'character varying' })
-  public identificatie: string;
+  @Column({ type: 'character varying', name: 'identificatie' })
+  public id: string;
 
   @Column({ type: 'boolean' })
   public aanduidingrecordinactief: boolean;
@@ -54,21 +54,25 @@ class Verblijfsobjectactueelbestaand {
   @Column({ type: 'date' })
   public documentdatum: Date;
 
-  @Column({ type: 'character varying' })
-  public hoofdadres: string;
+  @Column({ type: 'character varying', name: 'hoofdadres' })
+  public addr: string;
 
-  @Column({ type: 'enum', enum: VerblijfsobjectStatus })
-  public verblijfsobjectstatus: VerblijfsobjectStatus;
+  @Column({
+    type: 'enum',
+    enum: VerblijfsobjectStatus,
+    name: 'verblijfsobjectstatus',
+  })
+  public sts: VerblijfsobjectStatus;
 
   @Column({ type: 'geometry' })
   public geopunt: Geometry;
 
-  @Column({ type: 'geometry' })
+  @Column({ type: 'geometry', srid: 4326 })
   public geovlak: Geometry;
 
   @OneToMany(() => Population, (pop) => pop.verblijfsobject)
-  @JoinColumn({ name: 'identificatie', referencedColumnName: 'identificatie' })
-  public population: Population[];
+  @JoinColumn({ name: 'id', referencedColumnName: 'id' })
+  public pop: Population[];
 
   @ManyToMany(
     () => Pandactueelbestaand,
@@ -76,11 +80,9 @@ class Verblijfsobjectactueelbestaand {
   )
   @JoinTable({
     name: 'verblijfsobjectpandactueelbestaand',
-    joinColumns: [
-      { name: 'identificatie', referencedColumnName: 'identificatie' },
-    ],
+    joinColumns: [{ name: 'identificatie', referencedColumnName: 'id' }],
     inverseJoinColumns: [
-      { name: 'gerelateerdpand', referencedColumnName: 'identificatie' },
+      { name: 'gerelateerdpand', referencedColumnName: 'id' },
     ],
   })
   public panden: Pandactueelbestaand[];

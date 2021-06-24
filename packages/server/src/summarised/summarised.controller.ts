@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { FeatureDto } from '../common/dtos/Feature.dto';
-import { Buurten } from '../common/entities/buurten.entity';
+import { FeatureCollectionDto } from '../common/dtos/FeatureCollection.dto';
 import { SupportedGeometryPipe } from '../common/pipes/supportedGeometry.pipe';
 import { SummarisedService } from './summarised.service';
 
@@ -12,7 +12,7 @@ export class SummarisedController {
   async getSummarisedData(
     @Body(new SupportedGeometryPipe())
     feature: FeatureDto,
-  ): Promise<Buurten[]> {
+  ): Promise<FeatureCollectionDto> {
     return this.summarisedService.getSummarisedDataInGeometry(feature);
   }
 }

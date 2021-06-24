@@ -21,7 +21,7 @@ import { PolygonDto } from './Polygon.dto';
 export class FeatureDto {
   @Matches(/^Feature$/, { message: 'type must be Feature' })
   @IsString()
-  public type: 'Feature';
+  public type = 'Feature';
 
   @IsGeometryObject()
   @Type(() => GeoJsonObjectDto, {

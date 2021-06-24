@@ -5,7 +5,7 @@ import { FeatureDto } from './Feature.dto';
 
 export class FeatureCollectionDto {
   @Matches(/^FeatureCollection$/, { message: 'type must be FeatureCollection' })
-  type: 'FeatureCollection';
+  type = 'FeatureCollection';
 
   @Type(() => FeatureDto)
   @ValidateNested()

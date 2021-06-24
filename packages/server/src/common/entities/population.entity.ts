@@ -54,11 +54,11 @@ class Population {
   @Column({ type: 'numeric' })
   public oppervlakteverblijfsobject: number;
 
-  @Column({ type: 'character' })
-  public gebruiksdoelverblijfsobject: string;
+  @Column({ type: 'character', name: 'gebruiksdoelverblijfsobject' })
+  public func: string;
 
-  @ManyToOne(() => Verblijfsobjectactueelbestaand, (verb) => verb.population)
-  @JoinColumn({ name: 'identificatie', referencedColumnName: 'identificatie' })
+  @ManyToOne(() => Verblijfsobjectactueelbestaand, (verb) => verb.pop)
+  @JoinColumn({ name: 'identificatie', referencedColumnName: 'id' })
   public verblijfsobject: Verblijfsobjectactueelbestaand;
 
   @IsOptional()
