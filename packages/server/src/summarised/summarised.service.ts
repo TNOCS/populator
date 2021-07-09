@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { Repository } from 'typeorm';
@@ -12,10 +13,13 @@ export class SummarisedService {
   constructor(
     @InjectRepository(Buurten)
     private summarisedRepository: Repository<Buurten>,
+    private configService: ConfigService,
   ) {}
 
   getSummarisedDataInGeometry(
     feature: FeatureDto,
+    daypart?: string,
+    weektime?: string,
   ): Promise<FeatureCollectionDto> {
     const GQFactory = new GeometryQueryFactory();
     const geomQuery = GQFactory.getQuery(feature);
@@ -45,7 +49,61 @@ export class SummarisedService {
           from GetPartialBuurtData(${geomQuery})) feature_rows`,
       )
       .then((results: any) => {
-        return plainToClass(FeatureCollectionDto, results[0].featurecollection);
+        const featureCollection = plainToClass(
+          FeatureCollectionDto,
+          results[0].featurecollection,
+        );
+
+        let popPercHome = 0;
+
+        // mapping for determination of population amount at home and at work
+        switch (daypart) {
+          case 'morning': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_MORNING');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_MORNING');
+            }
+            break;
+          }
+          case 'afternoon': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_AFTERNOON');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_AFTERNOON');
+            }
+            break;
+          }
+          case 'evening': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_EVENING');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_EVENING');
+            }
+            break;
+          }
+          case 'night': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_NIGHT');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_NIGHT');
+            }
+            break;
+          }
+          default: {
+            popPercHome = 1;
+          }
+        }
+
+        // mapping for determination of population amount at home and at work
+        featureCollection.features.map(function (x) {
+          x.properties.t_non_res = Math.round(
+            x.properties.t_non_res * (1 - popPercHome),
+          );
+          x.properties.t_res = Math.round(x.properties.t_res * popPercHome);
+        });
+
+        return featureCollection;
       });
 
     return buurtData;

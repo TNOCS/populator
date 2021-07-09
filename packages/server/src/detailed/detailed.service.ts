@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { Repository } from 'typeorm';
@@ -13,10 +14,13 @@ export class DetailedService {
   constructor(
     @InjectRepository(Pandactueelbestaand)
     private pandRepository: Repository<Pandactueelbestaand>,
+    private configService: ConfigService,
   ) {}
 
   getDetailedDataInGeometry(
     feature: FeatureDto,
+    daypart?: string,
+    weektime?: string,
   ): Promise<FeatureCollectionDto> {
     const GQFactory = new GeometryQueryFactory();
     const geomQuery = GQFactory.getQuery(feature);
@@ -60,6 +64,68 @@ export class DetailedService {
         fc.features = results.map((pand) => {
           return pandToFeature(pand);
         });
+
+        let popPercHome = 0;
+
+        // mapping for determination of population amount at home and at work
+        switch (daypart) {
+          case 'morning': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_MORNING');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_MORNING');
+            }
+            break;
+          }
+          case 'afternoon': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_AFTERNOON');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_AFTERNOON');
+            }
+            break;
+          }
+          case 'evening': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_EVENING');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_EVENING');
+            }
+            break;
+          }
+          case 'night': {
+            if (weektime == 'weekend') {
+              popPercHome = this.configService.get('WEEKEND_NIGHT');
+            } else {
+              popPercHome = this.configService.get('WEEKDAY_NIGHT');
+            }
+            break;
+          }
+          default: {
+            popPercHome = 1;
+          }
+        }
+
+        fc.features.forEach(function (feature) {
+          const vbos: FeatureCollectionDto = feature.properties.vbos;
+          if (vbos !== undefined) {
+            let total_vbo_ppl = 0;
+
+            vbos.features.forEach(function (vbo) {
+              vbo.properties.pop.forEach(function (pop) {
+                if (pop.func == 'woonfunctie') {
+                  pop.hh_size = Math.round(pop.hh_size * popPercHome);
+                } else {
+                  pop.hh_size = Math.round(pop.hh_size * (1 - popPercHome));
+                }
+                total_vbo_ppl += pop.hh_size;
+              });
+            });
+
+            feature.properties.ttl_ppl = total_vbo_ppl;
+          }
+        });
+
         return fc;
       });
 
