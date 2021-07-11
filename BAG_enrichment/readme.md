@@ -100,3 +100,6 @@ In order to start the generation execute the following python command in the sam
 ## step 3 importing into db
 
 Run the population_table.sql file from the sql folder to create the table for population data. After the table is created, right click it and select import/export to import the created csv. In this window click the slider that says export to enable import mode, select the 3 dots next to the filename field to open the file browser. In the top right click the upload button in order to upload the created csv. Select your file after uploading and click ok, and then ok again to start importing.
+
+## step 4 creating summarised data function in database
+to select data for partailly selected neighbourhoods the sql files in the sql folder of this repository should be executed in the newly created database. This will create a function for building partial neigbourhoods based on the generated population data
