@@ -4,8 +4,8 @@ import queue
 import math
 import random
 
-# buurten = pd.read_csv('buurten_dordrecht.csv')
-buurten = pd.read_csv('buurten_nederland.csv')
+buurten = pd.read_csv('buurten_dordrecht.csv')
+# buurten = pd.read_csv('buurten_nederland.csv')
 
 gemeente_data = pd.read_csv('Huishoudens__samenstelling__regio.csv', sep=';')
 gemeente_data.dropna()
@@ -369,8 +369,8 @@ leeftijden_per_huishouden = leeftijden_per_huishouden.fillna(0)
 ######
 
 dtypes = {'bu_code': 'str', 'identificatie': 'str', 'oppervlakteverblijfsobject': 'int', 'gebruiksdoelverblijfsobject': 'str'}
-# buildings = pd.read_csv('verblijfsobjecten_dordrecht.csv', dtype=dtypes)
-buildings = pd.read_csv('verblijfsobjecten_nederland.csv', dtype=dtypes)
+buildings = pd.read_csv('verblijfsobjecten_dordrecht.csv', dtype=dtypes)
+# buildings = pd.read_csv('verblijfsobjecten_nederland.csv', dtype=dtypes)
 
 ######
 

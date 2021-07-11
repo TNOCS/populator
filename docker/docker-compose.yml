@@ -1,17 +1,13 @@
 version: '3.9'
 
 services:
-  postgis:
+  db:
     container_name: postgis
-    image: postgis/postgis
-    environment:
-      POSTGRES_DB: BAG
-      POSTGRES_USER: postgis
-      POSTGRES_PASSWORD: Geheim1!
-      PGDATA: /var/lib/postgis/data
+    image: postgis-population-service
+    env_file:
+      - .env
     volumes:
-      - ./postgis/postgis-data:/var/lib/postgis/data
-      - ./postgis/scripts:/docker-entrypoint-initdb.d
+      - pop-data:/var/libe/postgis/data
     ports:
       - 5432:5432
     restart: on-failure
@@ -28,8 +24,23 @@ services:
     ports:
       - 8080:80
     depends_on:
-      - postgis
+      - db
     links:
-      - postgis:postgis-db
+      - db:postgis-db
     volumes: 
       - ./pgadmin/servers.json:/pgadmin4/servers.json
+
+  pop:
+    container_name: population-service
+    image: population-service
+    env_file:
+      - .env
+    ports:
+      - 3333:3333
+    restart: on-failure
+    depends_on:
+      - db
+
+volumes:
+  pop-data:
+    external: false
