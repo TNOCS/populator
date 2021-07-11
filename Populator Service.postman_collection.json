@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "f6bb2b2f-c3ed-4365-a10d-07e541ee3a89",
+		"name": "Populator Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "detailed polygon",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/detailed",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"detailed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "summarised polygon",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/detailed",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"detailed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "detailed circle",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"Feature\",\r\n    \"properties\": {\r\n        \"shape\": \"Circle\",\r\n        \"radius\": 100\r\n        },\r\n        \"geometry\": {\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n            4.679851233959198,\r\n            51.78010641871353\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/detailed",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"detailed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "summarised circle",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"Feature\",\r\n    \"properties\": {\r\n        \"shape\": \"Circle\",\r\n        \"radius\": 100\r\n        },\r\n        \"geometry\": {\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n            4.679851233959198,\r\n            51.78010641871353\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/detailed",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"detailed"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
