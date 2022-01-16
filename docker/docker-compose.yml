@@ -1,18 +1,18 @@
-version: '3.9'
+version: "3.9"
 
 services:
   db:
     container_name: postgis
-    image: postgis-population-service
+    image: floris881/pop-service-db:latest
     env_file:
       - .env
-    volumes:
-      - pop-data:/var/libe/postgis/data
+    # volumes:
+    #   - pop-data:/var/libe/postgis/data
     ports:
       - 5432:5432
     restart: on-failure
-    shm_size: '4g'
-  
+    shm_size: "4g"
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -27,12 +27,12 @@ services:
       - db
     links:
       - db:postgis-db
-    volumes: 
-      - ./pgadmin/servers.json:/pgadmin4/servers.json
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
 
   pop:
     container_name: population-service
-    image: population-service
+    image: floris881/population-service:latest
     env_file:
       - .env
     ports:
@@ -40,7 +40,6 @@ services:
     restart: on-failure
     depends_on:
       - db
-
-volumes:
-  pop-data:
-    external: false
+# volumes:
+#   pop-data:
+#     external: false
